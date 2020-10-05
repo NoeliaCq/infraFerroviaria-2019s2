@@ -1,38 +1,10 @@
-class Deposito {	//formaciones armadas y locomotoras sueltas
-	
-}
-
-class Formacion {
-	var property composicionFormacion = []
-	
-	method capacidad() { return self.composicionFormacion().sum({vagon=> vagon.capacidad()}) }
-	method vagonesPopulares() {
-		return self.composicionFormacion().filter({vagon=> vagon.capacidad() > 50 }).size()
-	}
-	method formacionCarguera() { 
-		return self.composicionFormacion().all({vagon=> vagon.cantMaxCarga() >= 1000})
-	}
-	method vagonMasPesado() { return self.composicionFormacion().max({vagon=> vagon.pesoMax()}) }
-	method vagonMasLiviano() { return self.composicionFormacion().min({vagon=> vagon.pesoMax()}) }
-	method dispersionDePesos() {
-		return self.vagonMasPesado().pesoMax() - self.vagonMasLiviano().pesoMax()
-	}
-	method totalDeBanios() { return self.composicionFormacion().filter({vagon=> vagon.tieneBanios()}).size() }
-	method mantenimientoDeFormacion() {
-		
-	}
-}
-
-class Locomotora {
-	
-}
 
 class VagonPasajeros {
 	var property largo = 0
 	var property ancho = 0
 	var property tieneBanios = true
 	var property estaOrdenado = true
-	//var property pasajerosEnVagon = 0
+	
 	
 	method capacidad() { 
 		if(estaOrdenado) {
@@ -44,6 +16,7 @@ class VagonPasajeros {
 	}
 	method cantMaxCarga() { return if(tieneBanios) {300} else {800} }
 	method pesoMax() { return 2000 + self.capacidad() * 80 + self.cantMaxCarga() }
+	method mantenimiento() { self.estaOrdenado(true) }
 }
 
 class VagonCarga {
@@ -53,7 +26,8 @@ class VagonCarga {
 	method tieneBanios() { return false }
 	method capacidad() { return 0 }
 	method cantMaxCarga() { return self.cargaMaxIdeal() - self.maderasSueltas() * 400 }
-	method pesoMax() { return 1500 + self.capacidad() }
+	method pesoMax() { return 1500 + self.cantMaxCarga() }
+	method mantenimiento() { maderasSueltas = 0.max(maderasSueltas - 2) }
 }
 
 class VagonDormitorio {
@@ -64,9 +38,18 @@ class VagonDormitorio {
 	method capacidad() { return self.compartimientos() * self.camasPorCompartimiento() }
 	method cantMaxCarga() { return 1200 }
 	method pesoMax() { return 4000 + self.capacidad() * 80 + self.cantMaxCarga() }
+	method mantenimiento() { }
 }
 
-
+///variables para consola
+/*
+ * const pasajeros1 = new VagonPasajeros(largo = 10, ancho = 2, tieneBanios = true, estaOrdenado = true)
+ * const pasajeros2 = new VagonPasajeros(largo = 10, ancho = 4, tieneBanios = true, estaOrdenado = true)
+ * const carga1 = new VagonCarga(cargaMaxIdeal = 8000, maderasSueltas = 5)
+ * const dormi1 = new VagonDormitorio(compartimientos = 12, camasPorCompartimiento = 4)
+ * 
+ * 
+ */
 
 
 
